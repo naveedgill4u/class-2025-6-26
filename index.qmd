@@ -1,0 +1,61 @@
+---
+title: "census and income"
+---
+
+```{r}
+
+# Suppress package startup messages
+suppressPackageStartupMessages(library(tidyverse))
+
+# Suppress column specification message from readr::read_csv()
+nyc_data <- read_csv(
+  "https://raw.githubusercontent.com/PPBDS/primer.data/master/data-raw/nyc_tracts.csv",
+  show_col_types = FALSE
+)
+
+# Optional: Suppress messages from glimpse too
+suppressMessages(glimpse(nyc_data))
+
+```
+
+```{r}
+# Load tidyverse
+library(tidyverse)
+
+# Read the data
+nyc_data <- read_csv(
+  "https://raw.githubusercontent.com/PPBDS/primer.data/master/data-raw/nyc_tracts.csv",
+  show_col_types = FALSE
+)
+
+# Clean the data
+nyc_clean <- nyc_data %>%
+  filter(!is.na(med_income), !is.na(race)) %>%
+  mutate(race = factor(race, levels = c("White", "Hispanic", "Black", "Asian")))
+
+# Plot the data
+ggplot(nyc_clean, aes(x = med_income, y = race)) +
+  geom_jitter(aes(color = med_income), width = 0, height = 0.25, alpha = 0.7, size = 2) +
+  scale_color_viridis_c(option = "plasma", name = "Median Income") +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  labs(title = "Income Distribution by Racial Majority in NYC Census Tracts",
+    subtitle = "Each dot represents a census tract, grouped by largest racial group.",
+    x = "Median Household Income",
+    y = "Largest Racial Group",
+    caption = "Source: PPBDS NYC Census Tract Data") +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom")
+
+```
+
+
+
+
+
+
+
+
+
+
