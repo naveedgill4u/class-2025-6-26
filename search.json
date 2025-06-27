@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "census and income",
+    "section": "",
+    "text": "# Suppress package startup messages\nsuppressPackageStartupMessages(library(tidyverse))\n\n# Suppress column specification message from readr::read_csv()\nnyc_data &lt;- read_csv(\n  \"https://raw.githubusercontent.com/PPBDS/primer.data/master/data-raw/nyc_tracts.csv\",\n  show_col_types = FALSE\n)\n\n# Optional: Suppress messages from glimpse too\nsuppressMessages(glimpse(nyc_data))\n\nRows: 2,242\nColumns: 3\n$ tract      &lt;chr&gt; \"Census Tract 1.01; Queens County; New York\", \"Census Tract…\n$ race       &lt;chr&gt; \"White\", \"White\", \"Black\", \"White\", \"Hispanic\", \"Black\", \"B…\n$ med_income &lt;dbl&gt; 124885, 213750, NA, 109352, 23658, 83872, 106250, 140521, 4…\n\n\n\n# Load tidyverse\nlibrary(tidyverse)\n\n# Read the data\nnyc_data &lt;- read_csv(\n  \"https://raw.githubusercontent.com/PPBDS/primer.data/master/data-raw/nyc_tracts.csv\",\n  show_col_types = FALSE\n)\n\n# Clean the data\nnyc_clean &lt;- nyc_data %&gt;%\n  filter(!is.na(med_income), !is.na(race)) %&gt;%\n  mutate(race = factor(race, levels = c(\"White\", \"Hispanic\", \"Black\", \"Asian\")))\n\n# Plot the data\nggplot(nyc_clean, aes(x = med_income, y = race)) +\n  geom_jitter(aes(color = med_income), width = 0, height = 0.25, alpha = 0.7, size = 2) +\n  scale_color_viridis_c(option = \"plasma\", name = \"Median Income\") +\n  scale_x_continuous(labels = scales::dollar_format()) +\n  labs(title = \"Income Distribution by Racial Majority in NYC Census Tracts\",\n    subtitle = \"Each dot represents a census tract, grouped by largest racial group.\",\n    x = \"Median Household Income\",\n    y = \"Largest Racial Group\",\n    caption = \"Source: PPBDS NYC Census Tract Data\") +\n  theme_minimal(base_size = 14) +\n  theme(plot.title = element_text(face = \"bold\", size = 16),\n    plot.subtitle = element_text(size = 12),\n    legend.position = \"bottom\")"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]
